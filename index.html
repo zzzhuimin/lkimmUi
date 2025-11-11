@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宁波力劲塑机智造 - 智能报修系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #b71c1c;
+            --light-red: #f44336;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --text-gray: #b0b0b0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #2d1b1b 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            margin-right: 1rem;
+            text-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+        
+        .company-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #f5f5f5, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-red), var(--light-red));
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(211, 47, 47, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            color: var(--primary-red);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(211, 47, 47, 0.5);
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .card-desc {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+        }
+        
+        .scan-hint {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-gray);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .scan-hint i {
+            color: var(--primary-red);
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(211, 47, 47, 0.05);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card {
+                max-width: 100%;
+                padding: 2rem;
+            }
+            
+            .company-name {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-industry logo-icon"></i>
+            <h1 class="company-name">宁波力劲塑机智造有限公司</h1>
+        </div>
+        <p class="tagline">智能制造解决方案的领先者</p>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <i class="fas fa-tools card-icon"></i>
+            <h2 class="card-title">设备报修</h2>
+            <p class="card-desc">遇到设备故障？点击下方按钮立即提交报修申请。我们的专业工程师将尽快联系您并提供解决方案。</p>
+            <a href="https://tcndrhj51dhn.feishu.cn/share/base/form/shrcnDHuYxjKBSMIdYTt6dQgFLb?from=navigation" class="btn">立即报修</a>
+        </div>
+        
+        <div class="card">
+            <i class="fas fa-search card-icon"></i>
+            <h2 class="card-title">进度查询</h2>
+            <p class="card-desc">已提交报修申请？点击下方按钮实时查看维修进度，了解工程师预计到达时间和服务状态。</p>
+            <a href="https://tcndrhj51dhn.feishu.cn/share/base/query/shrcnIii4t7M24D0FFilHsXCj8e?from=navigation" class="btn">查询进度</a>
+        </div>
+    </div>
+    
+    <div class="scan-hint">
+        <i class="fas fa-qrcode"></i>
+        <span>使用手机扫描二维码访问此页面</span>
+    </div>
+    
+    <footer class="footer">
+        <p>宁波力劲塑机智造有限公司 © 2025 版权所有 | 智能报修系统 v2.0</p>
+        <p>服务热线: 40098-81890</p>
+    </footer>
+
+    <script>
+        // 创建浮动背景元素
+        const floatingElements = document.getElementById('floatingElements');
+        for (let i = 0; i < 15; i++) {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            
+            // 随机大小和位置
+            const size = Math.random() * 100 + 20;
+            const left = Math.random() * 100;
+            const animationDuration = Math.random() * 20 + 15;
+            const animationDelay = Math.random() * 10;
+            
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            element.style.left = `${left}%`;
+            element.style.animationDuration = `${animationDuration}s`;
+            element.style.animationDelay = `${animationDelay}s`;
+            
+            floatingElements.appendChild(element);
+        }
+        
+        // 添加卡片点击效果
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
